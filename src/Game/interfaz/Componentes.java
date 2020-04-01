@@ -7,6 +7,8 @@ package Game.interfaz;
 
 import java.applet.Applet;
 import java.applet.AudioClip;
+import java.net.MalformedURLException;
+import java.net.URL;
 import javax.swing.JLabel;
 
 /**
@@ -14,7 +16,7 @@ import javax.swing.JLabel;
  * @author macbookair
  */
 public class Componentes {
-    AudioClip audio;
+    public AudioClip audio;
     //background 
     public JLabel fondo;
     
@@ -39,6 +41,7 @@ public class Componentes {
             @Override
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 btn_cerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/salir_03.png"))); 
+                System.exit(0);
             }
             @Override
             public void mouseEntered(java.awt.event.MouseEvent evt){
@@ -54,9 +57,7 @@ public class Componentes {
             }
         });
     }
-     public void playAudio(String nombre){
-         audio = Applet.newAudioClip(getClass().getClassLoader().getResource("/Game/music/"+nombre));
-         audio.loop();
-     }
-     
+    public void playAudio(String nombre) throws MalformedURLException{
+        
+    } 
 }

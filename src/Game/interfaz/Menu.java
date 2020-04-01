@@ -9,12 +9,13 @@ import java.awt.Color;
 import javax.swing.GroupLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
+import java.applet.AudioClip;
 /**
  *
  * @author macbookair
  */
 public class Menu extends JFrame{
+    AudioClip audio;
     Componentes componentes;
     JPanel panel_menu;
 
@@ -22,7 +23,8 @@ public class Menu extends JFrame{
         componentes = new Componentes();
         initComponents();
         componentsFrame();
-        componentes.playAudio("Osondoar.wav");
+        audio = java.applet.Applet.newAudioClip(getClass().getResource("/Game/music/Osondoar.wav"));
+        audio.play();
     }
     
     private void initComponents(){
