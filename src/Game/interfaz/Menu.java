@@ -1,26 +1,45 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Game.interfaz;
 
-import java.awt.Color;
 import javax.swing.GroupLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.applet.AudioClip;
+import java.awt.Image;
+import java.awt.Toolkit;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextPane;
 /**
  *
- * @author macbookair
+ * @author Josegomz
  */
 public class Menu extends JFrame{
     AudioClip audio;
     Componentes componentes;
     JPanel panel_menu;
+    JPanel panel_acerca;
+    
+    
+    Sonido sound;
+    //componentes menu
+    private JLabel lbl_menu;
+    private JLabel btn_iniciar;
+    private JLabel btn_acerca;
+    private JLabel btn_puntuacion;
+    public JLabel lbl_creditos;
 
+
+    //componentes acerca de 
+    private JLabel lbl_ventanaAD;
+    private JScrollPane scroll_AD;       
+    private JTextPane lbl_acerca;
+    
+    
+    //constructor
     public Menu(){
         componentes = new Componentes();
+        sound = new Sonido();
+        initFrame();
         initComponents();
         componentsFrame();
         audio = java.applet.Applet.newAudioClip(getClass().getResource("/Game/music/Osondoar.wav"));
@@ -28,6 +47,168 @@ public class Menu extends JFrame{
     }
     
     private void initComponents(){
+        //personalizar panel
+        panel_menu = componentes.getPanel();
+        
+        //botones
+        btn_iniciar = new JLabel();
+        btn_iniciar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/iniciar_01.png"))); // NOI18N
+        btn_iniciar.setSize(300, 100);
+        btn_iniciar.setLocation(350, 200);
+        btn_iniciar.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btn_iniciar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/iniciar_03.png"))); 
+                sound.sonido("click.wav");
+            }
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent evt){
+                btn_iniciar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/iniciar_02.png"))); 
+                sound.sonido("click2.wav");
+            }
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent evt){
+                btn_iniciar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/iniciar_01.png"))); 
+            }
+            @Override
+            public void mouseReleased(java.awt.event.MouseEvent evt){
+                SelectGenero selectGenero = new SelectGenero();
+                selectGenero.show();
+                audio.stop();
+                dispose();
+            }
+        });
+        
+        btn_acerca = new JLabel();
+        btn_acerca.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/acerca_01.png"))); // NOI18N
+        btn_acerca.setSize(300, 100);
+        btn_acerca.setLocation(350, 420);
+        btn_acerca.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btn_acerca.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/acerca_03.png"))); 
+                sound.sonido("click.wav");
+            }
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent evt){
+                btn_acerca.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/acerca_02.png"))); 
+                sound.sonido("click2.wav");
+            }
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent evt){
+                btn_acerca.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/acerca_01.png"))); 
+            }
+            @Override
+            public void mouseReleased(java.awt.event.MouseEvent evt){
+                btn_acerca.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/acerca_01.png"))); 
+                panel_menu.disable();
+                panel_menu.setVisible(false);
+                panel_acerca.setVisible(true);
+                cambiar_componentes(panel_acerca);
+            }
+        });
+        
+        btn_puntuacion = new JLabel();
+        btn_puntuacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/puntuacion_01.png"))); 
+        btn_puntuacion.setSize(300, 100);
+        btn_puntuacion.setLocation(350, 310);
+        btn_puntuacion.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btn_puntuacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/puntuacion_03.png"))); 
+                sound.sonido("click.wav");
+            }
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent evt){
+                btn_puntuacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/puntuacion_02.png"))); 
+                sound.sonido("click2.wav");
+            }
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent evt){
+                btn_puntuacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/puntuacion_01.png"))); 
+            }
+            @Override
+            public void mouseReleased(java.awt.event.MouseEvent evt){
+                btn_puntuacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/puntuacion_01.png"))); 
+            }
+        });
+
+        lbl_menu = new JLabel();
+        lbl_menu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/ventana/menu_01.png"))); // NOI18N
+        lbl_menu.setSize(450,500);
+        lbl_menu.setLocation(275, 100);
+        
+        lbl_creditos = new JLabel();
+        lbl_creditos.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        lbl_creditos.setSize(250,40);
+        lbl_creditos.setLocation(750, 660);
+        lbl_creditos.setText("Juego creado por: José Benito Gómez Sánchez");
+        lbl_creditos.setForeground(new java.awt.Color(0,0,0));
+        lbl_creditos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        
+        //agregar los componentes al frame
+        panel_menu.add(lbl_creditos);
+
+        panel_menu.add(componentes.btn_cerrar);
+        panel_menu.add(btn_iniciar);
+        panel_menu.add(btn_puntuacion);
+        panel_menu.add(btn_acerca);
+        panel_menu.add(lbl_menu);
+        panel_menu.add(componentes.fondo);
+        
+        //acerca_de
+        panel_acerca = componentes.getPanel();
+        panel_acerca.setVisible(false);
+        
+        scroll_AD = new JScrollPane();
+        scroll_AD.setSize(620, 330);
+        scroll_AD.setBorder(null);
+        scroll_AD.setLocation(190, 210);
+        scroll_AD.setBackground(new java.awt.Color(213,173,81));
+        
+        lbl_acerca = new JTextPane();
+        lbl_acerca.setFont(new java.awt.Font("Tahoma", 0, 38)); // NOI18N
+        lbl_acerca.setBackground(new java.awt.Color(213,173,81));
+        lbl_acerca.setText("El juego trata de una aventura donde el héroe con el uso de sus conocimientos va a rescatar a su princesa quien fue secuestrada por unos terribles goblins, en la etapa final del juego el héroe tendrá que luchar con el jefe para poder rescatar a la princesa. Los problemas que tendrán los obstáculos serán del nivel de primaria para que no sea complicado el juego.");
+        
+        scroll_AD.setViewportView(lbl_acerca);
+        
+        //botones
+        
+        
+        
+        lbl_ventanaAD = new JLabel();
+        lbl_ventanaAD.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/ventana/acerca_de_01.png"))); // NOI18N
+        lbl_ventanaAD.setSize(800,600);
+        lbl_ventanaAD.setLocation(100, 50);
+        
+        panel_acerca.add(scroll_AD);
+        panel_acerca.add(lbl_ventanaAD);
+        
+    }
+    
+    private void componentsFrame() {
+        getContentPane().add(panel_menu);
+        getContentPane().add(panel_acerca);
+    }
+    
+    @Override
+    public Image getIconImage() {
+        Image retValue = Toolkit.getDefaultToolkit().
+                getImage(ClassLoader.getSystemResource("/Game/img/player/hombre/Idle_1.png"));
+        return retValue;
+    }
+   
+    public static void main(String[] args) {
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Menu().setVisible(true);
+            }
+        });
+    }
+
+    private void initFrame() {
+        //personalizar el FRAME
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
         setResizable(false);
@@ -44,29 +225,23 @@ public class Menu extends JFrame{
         );
         pack();
         setLocationRelativeTo(null);
-        panel_menu = new JPanel();
-
-        GroupLayout grupo = new GroupLayout(panel_menu);
-        panel_menu.setLayout(grupo);
-        panel_menu.setSize(1000, 700);
-        panel_menu.setBackground(Color.GREEN);   
-        
-        panel_menu.add(componentes.btn_cerrar);
-        panel_menu.add(componentes.fondo);
     }
     
-    private void componentsFrame() {
-        getContentPane().add(panel_menu);
-    }
-   
-   
-    public static void main(String[] args) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Menu().setVisible(true);
+    public void cambiar_componentes(JPanel panel_actual){
+        panel_actual.add(componentes.btn_atras);
+        panel_actual.add(componentes.btn_cerrar);
+        panel_actual.add(componentes.fondo);
+        componentes.btn_atras.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseReleased(java.awt.event.MouseEvent evt){
+                componentes.btn_atras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/atras_01.png"))); 
+                panel_menu.setVisible(true);
+                panel_menu.enable();
+                panel_actual.disable();
+                panel_actual.setVisible(false);
+                panel_menu.add(componentes.btn_cerrar);
+                panel_menu.add(componentes.fondo);
             }
         });
     }
-
-    
 }

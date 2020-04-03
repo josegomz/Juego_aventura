@@ -5,11 +5,8 @@
  */
 package Game.interfaz;
 
-import java.applet.Applet;
 import java.applet.AudioClip;
 import java.awt.Color;
-import java.net.MalformedURLException;
-import java.net.URL;
 import javax.swing.GroupLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -28,8 +25,7 @@ public class Componentes {
     
     //Buttons
     public JLabel btn_cerrar;
-    
-    
+    public JLabel btn_atras;
     
     public Componentes(){
         initComponents();
@@ -64,6 +60,31 @@ public class Componentes {
             @Override
             public void mouseReleased(java.awt.event.MouseEvent evt){
                 System.exit(0);
+            }
+        });
+        
+        btn_atras = new JLabel();
+        btn_atras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/atras_01.png"))); // NOI18
+        btn_atras.setSize(70, 70);
+        btn_atras.setLocation(10, 10);
+        btn_atras.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btn_atras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/atras_03.png"))); 
+                sound.sonido("click.wav");
+            }
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent evt){
+                btn_atras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/atras_02.png"))); 
+                sound.sonido("click2.wav");
+            }
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent evt){
+                btn_atras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/atras_01.png"))); 
+            }
+            @Override
+            public void mouseReleased(java.awt.event.MouseEvent evt){
+                btn_atras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/atras_01.png"))); 
             }
         });
     }
