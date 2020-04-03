@@ -7,6 +7,12 @@ package Game.interfaz;
 
 import java.applet.AudioClip;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.GroupLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -87,6 +93,19 @@ public class Componentes {
                 btn_atras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/atras_01.png"))); 
             }
         });
+        titulo = new JLabel();
+        try {
+            titulo.setFont(getFont(90));
+        } catch (FontFormatException | IOException ex) {
+            Logger.getLogger(Componentes.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        titulo.setText("AVENTURA");
+        titulo.setSize(700,100);
+        titulo.setForeground(new java.awt.Color(0, 143, 57));
+        titulo.setLocation(150, 10);
+        titulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        
+        
     }
     
     public JPanel getPanel(){ 
@@ -98,4 +117,11 @@ public class Componentes {
         return jPanel;
     }
     
+    public Font getFont(float size) throws FontFormatException, IOException {
+        
+        InputStream is = getClass().getResourceAsStream("/Game/font/ARCADECLASSIC.TTF");
+        Font font = Font.createFont(Font.TRUETYPE_FONT, is);
+        font = font.deriveFont(size);
+        return font;
+    }
 }
