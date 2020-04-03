@@ -7,9 +7,12 @@ package Game.interfaz;
 
 import java.applet.Applet;
 import java.applet.AudioClip;
+import java.awt.Color;
 import java.net.MalformedURLException;
 import java.net.URL;
+import javax.swing.GroupLayout;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 /**
  *
@@ -17,14 +20,20 @@ import javax.swing.JLabel;
  */
 public class Componentes {
     public AudioClip audio;
+    Sonido sound;
+
     //background 
     public JLabel fondo;
+    public JLabel titulo;
     
     //Buttons
     public JLabel btn_cerrar;
     
+    
+    
     public Componentes(){
         initComponents();
+        sound = new Sonido();
     }
             
     private void initComponents(){
@@ -41,11 +50,12 @@ public class Componentes {
             @Override
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 btn_cerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/salir_03.png"))); 
-                System.exit(0);
+                sound.sonido("click.wav");
             }
             @Override
             public void mouseEntered(java.awt.event.MouseEvent evt){
                 btn_cerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/salir_02.png"))); 
+                sound.sonido("click2.wav");
             }
             @Override
             public void mouseExited(java.awt.event.MouseEvent evt){
@@ -53,11 +63,18 @@ public class Componentes {
             }
             @Override
             public void mouseReleased(java.awt.event.MouseEvent evt){
-                btn_cerrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/salir_02.png"))); 
+                System.exit(0);
             }
         });
     }
-    public void playAudio(String nombre) throws MalformedURLException{
-        
-    } 
+    
+    public JPanel getPanel(){ 
+        JPanel jPanel = new JPanel();
+        GroupLayout grupo = new GroupLayout(jPanel);
+        jPanel.setLayout(grupo);
+        jPanel.setSize(1000, 700);
+        jPanel.setBackground(Color.WHITE);
+        return jPanel;
+    }
+    
 }
