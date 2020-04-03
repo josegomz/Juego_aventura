@@ -53,6 +53,7 @@ public class SelectGenero extends JFrame{
                 Menu menu = new Menu();
                 menu.show();
                 audio.stop();
+                movimiento.stop();
                 dispose();
             }
         });
@@ -61,11 +62,33 @@ public class SelectGenero extends JFrame{
         player1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/player/hombre/Idle_1.png")));
         player1.setSize(170, 250);
         player1.setLocation(305, 225);
+        player1.addMouseListener(new java.awt.event.MouseAdapter(){
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent evt){
+                sonido.sonido("click.wav");
+                Jugar jugar = new Jugar("hombre");
+                jugar.show();
+                audio.stop();
+                movimiento.stop();
+                dispose();
+            }
+        });
         
         player2 = new JLabel();
         player2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/player/mujer/Idle_9.png")));
         player2.setSize(170, 250);
         player2.setLocation(525, 225);
+        player2.addMouseListener(new java.awt.event.MouseAdapter(){
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent evt){
+                sonido.sonido("click.wav");
+                Jugar jugar = new Jugar("mujer");
+                jugar.show();
+                audio.stop();
+                movimiento.stop();
+                dispose();
+            }
+        });
         
         
         ventana_genero = new JLabel();
@@ -86,14 +109,6 @@ public class SelectGenero extends JFrame{
 
     private void componentesFrame() {
         getContentPane().add(panel_genero);
-    }
-    
-    public static void main(String[] args) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new SelectGenero().setVisible(true);
-            }
-        });
     }
     
     private void inicializarFrame(){
