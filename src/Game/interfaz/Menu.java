@@ -4,11 +4,21 @@ import javax.swing.GroupLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.applet.AudioClip;
+import java.awt.Dimension;
+import java.awt.FontFormatException;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
+import javax.swing.plaf.basic.BasicScrollBarUI;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 /**
  *
  * @author Josegomz
@@ -130,6 +140,7 @@ public class Menu extends JFrame{
             @Override
             public void mouseReleased(java.awt.event.MouseEvent evt){
                 btn_puntuacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/puntuacion_01.png"))); 
+
             }
         });
 
@@ -150,6 +161,7 @@ public class Menu extends JFrame{
         panel_menu.add(lbl_creditos);
 
         panel_menu.add(componentes.btn_cerrar);
+        panel_menu.add(componentes.titulo);
         panel_menu.add(btn_iniciar);
         panel_menu.add(btn_puntuacion);
         panel_menu.add(btn_acerca);
@@ -165,12 +177,45 @@ public class Menu extends JFrame{
         scroll_AD.setBorder(null);
         scroll_AD.setLocation(190, 210);
         scroll_AD.setBackground(new java.awt.Color(213,173,81));
-        
+        scroll_AD.getVerticalScrollBar().setBackground(new java.awt.Color(193,153,61));
+        scroll_AD.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+            @Override
+            protected void configureScrollBarColors() {
+                this.thumbColor = new java.awt.Color(65,44,23);
+            }
+            @Override
+            protected JButton createDecreaseButton(int orientation) {
+                return createZeroButton();
+            }
+
+            @Override    
+            protected JButton createIncreaseButton(int orientation) {
+                return createZeroButton();
+            }
+
+        private JButton createZeroButton() {
+            JButton jbutton = new JButton();
+            jbutton.setPreferredSize(new Dimension(0, 0));
+            jbutton.setMinimumSize(new Dimension(0, 0));
+            jbutton.setMaximumSize(new Dimension(0, 0));
+            return jbutton;
+        }
+        });
         lbl_acerca = new JTextPane();
         lbl_acerca.setFont(new java.awt.Font("Tahoma", 0, 38)); // NOI18N
         lbl_acerca.setBackground(new java.awt.Color(213,173,81));
-        lbl_acerca.setText("El juego trata de una aventura donde el héroe con el uso de sus conocimientos va a rescatar a su princesa quien fue secuestrada por unos terribles goblins, en la etapa final del juego el héroe tendrá que luchar con el jefe para poder rescatar a la princesa. Los problemas que tendrán los obstáculos serán del nivel de primaria para que no sea complicado el juego.");
-        
+        lbl_acerca.setText("aventura \n\nEl  juego  trata  de  una  aventura  donde  el  heroe  con  el  uso  de  sus  conocimientos  va  a  rescatar  a  su  princesa  quien  fue  secuestrada  por  unos  terribles  goblins \n\n"
+                + "en  la  etapa  final  del  juego  el  heroe  tendra  que  luchar  con  el  jefe  para  poder  rescatar  a  la  princesa \n\n"
+                + "Los  problemas  que  tendran  los obstaculos  seran  del  nivel  de  primaria  para  que  no  sea  complicado  el  juego");
+        try {
+            lbl_acerca.setFont(componentes.getFont(50));
+        } catch (FontFormatException | IOException ex) {
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        StyledDocument doc = lbl_acerca.getStyledDocument();
+        SimpleAttributeSet center = new SimpleAttributeSet();
+        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+        doc.setParagraphAttributes(0, doc.getLength(), center, false);
         scroll_AD.setViewportView(lbl_acerca);
         
         //botones
