@@ -242,6 +242,7 @@ public class Menu extends JFrame {
         } catch (FontFormatException | IOException ex) {
             Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
         }
+        lbl_acerca.setEditable(false);
         StyledDocument doc = lbl_acerca.getStyledDocument();
         SimpleAttributeSet center = new SimpleAttributeSet();
         StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
