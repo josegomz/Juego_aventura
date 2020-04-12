@@ -32,6 +32,7 @@ public class Componentes {
     //Buttons
     public JLabel btn_cerrar;
     public JLabel btn_atras;
+    public JLabel btn_conf;
     
     public Componentes(){
         initComponents();
@@ -93,6 +94,29 @@ public class Componentes {
                 btn_atras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/atras_01.png"))); 
             }
         });
+        
+        btn_conf = new JLabel();
+        btn_conf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/configuracion_01.png"))); // NOI18
+        btn_conf.setSize(70, 70);
+        btn_conf.setLocation(10, 620);
+        btn_conf.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btn_conf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/configuracion_03.png"))); 
+                sound.sonido("click.wav");
+            }
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent evt){
+                btn_conf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/configuracion_02.png"))); 
+                sound.sonido("click2.wav");
+            }
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent evt){
+                btn_conf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/configuracion_01.png"))); 
+            }
+        });
+        
+        
         titulo = new JLabel();
         try {
             titulo.setFont(getFont(90));
