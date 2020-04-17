@@ -1,10 +1,8 @@
 package Game.interfaz;
 
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.SQLWarning;
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -71,8 +69,27 @@ public class Conexion {
         }
     }
     
+    //codigo de conexión a postgreSQL
+    
+    public void iniciarSesion(String username, String password){
+        
+    }
+    
+    public void registrar(String username,String password){
+        try {
+            Statement statement = con.createStatement();
+            String sql = "insert into jugador(\"username\",\"pwd\") values('"+username+"','"+password+"');";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.executeUpdate();
+            System.out.println("insercion exitosa");
+        } catch (SQLException ex) {
+            Logger.getLogger(Jugador.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public static void main(String[] args) {
         Conexion c = new Conexion();
+        c.registrar("raul", "primo");
         
     }
 }

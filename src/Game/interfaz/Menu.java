@@ -1,5 +1,6 @@
 package Game.interfaz;
 
+//paquetes importados
 import javax.swing.GroupLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -28,14 +29,19 @@ import javax.swing.text.StyledDocument;
  * @author Josegomz
  */
 public class Menu extends JFrame {
+    //objetos internos 
+    AudioClip audio;    //audio de fondo
+    Sonido sound;       //efectos
 
-    AudioClip audio;
-    Componentes componentes;
+    //componentes Jpanel
     JPanel panel_menu;
     JPanel panel_acerca;
     JPanel panel_puntuacion;
+    Configuracion configuracion;
+    
+    //componentes generales
+    Componentes componentes;
 
-    Sonido sound;
     //componentes menu
     private JLabel lbl_menu;
     private JLabel btn_iniciar;
@@ -48,10 +54,10 @@ public class Menu extends JFrame {
     private JScrollPane scroll_AD;
     private JTextPane lbl_acerca;
 
-    //
-    //constructor
+    //constructor vacío
     public Menu() {
         componentes = new Componentes();
+        configuracion = new Configuracion();
         sound = new Sonido();
         initFrame();
         initComponents();
@@ -186,9 +192,17 @@ public class Menu extends JFrame {
             }
         });
 
+        componentes.btn_conf.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                componentes.btn_conf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/configuracion_01.png")));
+                configuracion.setVisible(true);
+            }
+        });
+
         //agregar los componentes al frame
         panel_menu.add(lbl_creditos);
-
+        panel_menu.add(componentes.btn_conf);
         panel_menu.add(componentes.btn_cerrar);
         panel_menu.add(componentes.titulo);
         panel_menu.add(btn_iniciar);
@@ -265,6 +279,8 @@ public class Menu extends JFrame {
     }
 
     private void componentsFrame() {
+        getContentPane().add(configuracion);
+        configuracion.setVisible(false);
         getContentPane().add(panel_menu);
         getContentPane().add(panel_acerca);
         getContentPane().add(panel_puntuacion);

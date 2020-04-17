@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 
 /**
  *
- * @author macbookair
+ * @author josegomz
  */
 public class Jugador{
     Conexion conexion;
@@ -21,7 +21,6 @@ public class Jugador{
     JLabel player;
     String genero;
     public Jugador(String genero,int posX, int posY){
-        conexion = new Conexion();
         player = new JLabel();
         this.genero = genero;
         paint(1);
@@ -63,9 +62,6 @@ public class Jugador{
     public void setLocation(int posX,int posY){
         player.setLocation(posX, posY);
     }
-    
-
-    //codigo de conexión a postgreSQL
     
     
 }
