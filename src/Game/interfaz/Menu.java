@@ -1,8 +1,6 @@
 package Game.interfaz;
 
 //paquetes importados
-import javax.swing.GroupLayout;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.applet.AudioClip;
 import java.awt.Desktop;
@@ -28,7 +26,7 @@ import javax.swing.text.StyledDocument;
  *
  * @author Josegomz
  */
-public class Menu extends JFrame {
+public class Menu extends Ventana {
     //objetos internos 
     AudioClip audio;    //audio de fondo
     Sonido sound;       //efectos
@@ -59,7 +57,7 @@ public class Menu extends JFrame {
         componentes = new Componentes();
         configuracion = new Configuracion();
         sound = new Sonido();
-        initFrame();
+        initFrame(1000,700);
         initComponents();
         componentsFrame();
         audio = java.applet.Applet.newAudioClip(getClass().getResource("/Game/music/Osondoar.wav"));
@@ -301,25 +299,7 @@ public class Menu extends JFrame {
         });
     }
 
-    private void initFrame() {
-        //personalizar el FRAME
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setUndecorated(true);
-        setResizable(false);
-
-        GroupLayout layout = new GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 1000, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 700, Short.MAX_VALUE)
-        );
-        pack();
-        setLocationRelativeTo(null);
-    }
+    
 
     public void cambiar_componentes(JPanel panel_actual) {
         panel_actual.add(componentes.btn_atras);

@@ -22,7 +22,7 @@ import javax.swing.JTextField;
  *
  * @author josegomz
  */
-public class Login extends JFrame{
+public class Login extends Ventana{
     JPanel panel_login;
     Componentes componentes;
     Sonido sound;
@@ -42,21 +42,9 @@ public class Login extends JFrame{
     public Login(){
         componentes = new Componentes();
         sound = new Sonido();
-        initFrame();
+        initFrame(400,350);
         initComponents();
         componentsFrame();
-    }
-
-    private void initFrame() {
-        //personalizar el FRAME
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setResizable(false);
-        GroupLayout layout = new GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 400, Short.MAX_VALUE));
-        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 350, Short.MAX_VALUE));
-        pack();
-        setLocationRelativeTo(null);
     }
 
     private void initComponents() {

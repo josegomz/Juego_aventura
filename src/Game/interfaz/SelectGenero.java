@@ -8,8 +8,6 @@ package Game.interfaz;
 import java.applet.AudioClip;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.GroupLayout;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -17,7 +15,7 @@ import javax.swing.JPanel;
  *
  * @author macbookair
  */
-public class SelectGenero extends JFrame{
+public class SelectGenero extends Ventana{
     private JPanel panel_genero;
     Componentes componentes;
     AudioClip audio;
@@ -33,7 +31,7 @@ public class SelectGenero extends JFrame{
     public SelectGenero(){
         componentes = new Componentes();
         sonido = new Sonido();
-        inicializarFrame();
+        initFrame(1000,700);
         initComponentes();
         componentesFrame();
         movimiento = new Movimiento();
@@ -109,25 +107,6 @@ public class SelectGenero extends JFrame{
 
     private void componentesFrame() {
         getContentPane().add(panel_genero);
-    }
-    
-    private void inicializarFrame(){
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setUndecorated(true);
-        setResizable(false);
-
-        GroupLayout layout = new GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1000, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 700, Short.MAX_VALUE)
-        );
-        pack();
-        setLocationRelativeTo(null);
     }
     private class Movimiento extends Thread{
         @Override

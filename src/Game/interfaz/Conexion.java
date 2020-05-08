@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author macbookair
+ * @author Josegomz
  */
 public class Conexion {
 
