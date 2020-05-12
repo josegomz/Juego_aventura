@@ -1,11 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Game.interfaz;
 
-import java.applet.AudioClip;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JLabel;
@@ -17,10 +12,6 @@ import javax.swing.JPanel;
  */
 public class SelectGenero extends Ventana{
     private JPanel panel_genero;
-    Componentes componentes;
-    AudioClip audio;
-    Sonido sonido;
-    
     //mas componentes
     private JLabel ventana_genero;
     Movimiento movimiento;
@@ -29,85 +20,87 @@ public class SelectGenero extends Ventana{
 
     
     public SelectGenero(){
-        componentes = new Componentes();
-        sonido = new Sonido();
         initFrame(1000,700);
+                cargarComponentesExtras();
         initComponentes();
+        initEvent();
         componentesFrame();
         movimiento = new Movimiento();
         movimiento.start();
-        audio = java.applet.Applet.newAudioClip(getClass().getResource("/Game/music/airship.wav"));
-        audio.play();
+        playMusic("airship.wav");
     }
 
-    private void initComponentes() {
-        panel_genero = componentes.getPanel();//obtienes el panel
-        
-        
-        componentes.btn_atras.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseReleased(java.awt.event.MouseEvent evt){
-                componentes.btn_atras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/atras_01.png"))); 
-                Menu menu = new Menu();
-                menu.show();
-                audio.stop();
-                movimiento.stop();
-                dispose();
-            }
-        });
+    @Override
+    protected void initComponentes() {
+        panel_genero = getPanel();//obtienes el panel
         
         player1 = new JLabel();
         player1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/player/hombre/Idle_1.png")));
         player1.setSize(170, 250);
         player1.setLocation(305, 225);
-        player1.addMouseListener(new java.awt.event.MouseAdapter(){
-            @Override
-            public void mousePressed(java.awt.event.MouseEvent evt){
-                sonido.sonido("click.wav");
-                Jugar jugar = new Jugar("hombre");
-                jugar.show();
-                audio.stop();
-                movimiento.stop();
-                dispose();
-            }
-        });
-        
+         
         player2 = new JLabel();
         player2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/player/mujer/Idle_9.png")));
         player2.setSize(170, 250);
         player2.setLocation(525, 225);
-        player2.addMouseListener(new java.awt.event.MouseAdapter(){
-            @Override
-            public void mousePressed(java.awt.event.MouseEvent evt){
-                sonido.sonido("click.wav");
-                Jugar jugar = new Jugar("mujer");
-                jugar.show();
-                audio.stop();
-                movimiento.stop();
-                dispose();
-            }
-        });
-        
         
         ventana_genero = new JLabel();
         ventana_genero.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/ventana/genero_01.png"))); 
         ventana_genero.setSize(600, 400);
         ventana_genero.setLocation(200, 150);
         
-        //agregar los componentes al panel
-        
+        //agregar los componentes al panel 
         panel_genero.add(player1);
         panel_genero.add(player2);
         panel_genero.add(ventana_genero);
-        panel_genero.add(componentes.btn_cerrar);
-        panel_genero.add(componentes.btn_atras);
-        panel_genero.add(componentes.fondo);
-                
+        panel_genero.add(btn_cerrar);
+        panel_genero.add(btn_atras);
+        panel_genero.add(fondo);          
     }
 
     private void componentesFrame() {
         getContentPane().add(panel_genero);
     }
+
+    @Override
+    protected void initEvent() {
+        btn_atras.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseReleased(java.awt.event.MouseEvent evt){
+                btn_atras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/atras_01.png"))); 
+                Menu menu = new Menu();
+                menu.show();
+                stopMusic();
+                movimiento.stop();
+                dispose();
+            }
+        });
+        
+        player1.addMouseListener(new java.awt.event.MouseAdapter(){
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent evt){
+                playSound("click.wav");
+                Jugar jugar = new Jugar("hombre");
+                jugar.show();
+                stopMusic();
+                movimiento.stop();
+                dispose();
+            }
+        });
+        
+        player2.addMouseListener(new java.awt.event.MouseAdapter(){
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent evt){
+                playSound("click.wav");
+                Jugar jugar = new Jugar("mujer");
+                jugar.show();
+                stopMusic();
+                movimiento.stop();
+                dispose();
+            }
+        });
+    }
+    
     private class Movimiento extends Thread{
         @Override
         public void run(){

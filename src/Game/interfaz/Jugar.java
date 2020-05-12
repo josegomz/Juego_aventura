@@ -1,7 +1,6 @@
 //nombre del paquete
 package Game.interfaz;
 
-import java.applet.AudioClip;
 import java.awt.event.KeyEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,36 +16,26 @@ public class Jugar extends Ventana {
     final int NUM_OBSTACULOS = 5;
     //variables de objeto
     Movimiento hilo;
-    Sonido sound;
     Jugador jugador;
-    Componentes componentes;
     Obstaculos obstaculos[];
     Base base;
-    AudioClip audio;
 
     JPanel panel_jugar;
     JPanel panel_pausa;
     JLabel btn_home;
     JLabel btn_pausa;
     JLabel btn_reanudar;
-    
-    
+
     public Jugar(String genero) {
         jugador = new Jugador(genero, 105, 515);
-        sound = new Sonido();
         base = new Base();
-        componentes = new Componentes();
         initFrame(1000, 700);
         initEvent();
+        cargarComponentesExtras();
         initComponentes();
         componetesframe();
-        playMusic();
+        playMusic("bg.wav");
         initHilo();
-    }
-
-    private void playMusic() {
-        audio = java.applet.Applet.newAudioClip(getClass().getResource("/Game/music/bg.wav"));
-        audio.loop();
     }
 
     private void initHilo() {
@@ -54,34 +43,92 @@ public class Jugar extends Ventana {
         hilo.start();
     }
 
-    private void initComponentes() {
-        panel_jugar = componentes.getPanel();
+    @Override
+    protected void initComponentes() {
+        panel_jugar = getPanel();
         //agregamos los obstaculos 
         obstaculos = new Obstaculos[NUM_OBSTACULOS];
-        for (int i = 0; i < NUM_OBSTACULOS; i++) {
-            obstaculos[i] = new Obstaculos(i * 450 + 300, 500);
-            obstaculos[i].agregar();
-        }
+        
         //boton de inicio
         btn_home = new JLabel();
         btn_home.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/home_01.png")));
         btn_home.setSize(70, 70);
         btn_home.setLocation(10, 10);
-        
+
         btn_pausa = new JLabel();
         btn_pausa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/pausa_01.png")));
         btn_pausa.setSize(70, 70);
         btn_pausa.setLocation(90, 10);
-        
+
+        //eventos
+        btn_home.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_home.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/home_02.png")));
+                playSound("click2.wav");
+            }
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btn_home.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/home_01.png")));
+            }
+
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btn_home.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/home_03.png")));
+                playSound("click.wav");
+            }
+
+            @Override
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                btn_home.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/home_01.png")));
+                Menu menu = new Menu();
+                stopMusic();
+                menu.show();
+                dispose();
+            }
+
+        });
+
+        btn_pausa.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn_pausa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/pausa_02.png")));
+                playSound("click2.wav");
+            }
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btn_pausa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/pausa_01.png")));
+            }
+
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                btn_pausa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/pausa_03.png")));
+                playSound("click.wav");
+            }
+
+            @Override
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                btn_pausa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/pausa_01.png")));
+            }
+
+        });
+
         panel_jugar.add(jugador.player);
         panel_jugar.add(btn_home);
         panel_jugar.add(btn_pausa);
-        panel_jugar.add(componentes.btn_cerrar);
+        panel_jugar.add(btn_cerrar);
+        for (int i = 0; i < NUM_OBSTACULOS; i++) {
+            obstaculos[i] = new Obstaculos(i * 450 + 300, 500);
+            obstaculos[i].agregar();
+        }
         base.agregar();
         base.agregar_fondo();
     }
 
-    private void initEvent() {
+    @Override
+    protected void initEvent() {
         addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -127,24 +174,25 @@ public class Jugar extends Ventana {
 
     //hilo que se encarga del movimiento
     private class Movimiento extends Thread {
+
         @Override
         public void run() {
             while (true) {
                 System.out.println("");
-                
+
                 //cuando se mueve el jugador a la derecha >-> >->
                 if (estadoderecha) {
                     for (int j = 0; j < NUM_OBSTACULOS; j++) {
                         obstaculos[j].mover(-20);
                     }
                     base.mover(-20, -5);
-                    sound.sonido("sfx_step_rock_r.wav");
+                    playSound("sfx_step_rock_r.wav");
                     for (int i = 1; i <= 8; i++) {
                         try {
                             Thread.sleep(30);
                             jugador.paint_walk(i);
                             if (i == 4) {
-                                sound.sonido("sfx_step_rock_r.wav");
+                                playSound("sfx_step_rock_r.wav");
                             }
                             jugador.moverDerecha();
                             Thread.sleep(30);
@@ -154,16 +202,16 @@ public class Jugar extends Ventana {
                     }
 
                 }
-                
+
                 //cuando el jugador se mueve a la izquierda <-< <-<
                 if (estadoizquierda) {
-                    sound.sonido("sfx_step_rock_l.wav");
+                    playSound("sfx_step_rock_l.wav");
                     for (int i = 1; i <= 8; i++) {
                         try {
                             Thread.sleep(35);
                             jugador.paint_walk(i + 8);
                             if (i == 4) {
-                                sound.sonido("sfx_step_rock_r.wav");
+                                playSound("sfx_step_rock_r.wav");
                             }
                             jugador.moverIzquierda();
                             Thread.sleep(35);
@@ -172,7 +220,7 @@ public class Jugar extends Ventana {
                         }
                     }
                 }
-                
+
                 //cuando el jugador salta 
                 if (!estadoderecha && !estadoizquierda) {
                     for (int i = 1; i <= 8; i++) {
@@ -186,7 +234,7 @@ public class Jugar extends Ventana {
                     }
                 }
                 if (salto) {
-                    sound.sonido("sfx_step_rock_l.wav");
+                    playSound("sfx_step_rock_l.wav");
                     for (int i = 1; i <= 15; i++) {
                         try {
                             Thread.sleep(20);
@@ -209,7 +257,7 @@ public class Jugar extends Ventana {
 
                     }
                     jugador.moverAbajo();
-                    sound.sonido("sfx_step_rock_l.wav");
+                    playSound("sfx_step_rock_l.wav");
                     salto = false;
                 }
             }
@@ -253,6 +301,7 @@ public class Jugar extends Ventana {
     }
 
     private class Base {
+
         JLabel[] fondo;
         JLabel[] tile_01;
 
@@ -303,67 +352,5 @@ public class Jugar extends Ventana {
             }
         }
     }
-    
-    private void agregarEventos(){
-        btn_home.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btn_home.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/home_02.png")));
-                sound.sonido("click2.wav");
 
-            }
-
-            @Override
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                btn_home.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/home_01.png")));
-
-            }
-
-            @Override
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                btn_home.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/home_03.png")));
-                sound.sonido("click.wav");
-
-            }
-
-            @Override
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                btn_home.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/home_01.png")));
-                Menu menu = new Menu();
-                audio.stop();
-                menu.show();
-                dispose();
-            }
-
-        });
-        
-        btn_pausa.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btn_pausa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/pausa_02.png")));
-                sound.sonido("click2.wav");
-            }
-
-            @Override
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                btn_pausa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/pausa_01.png")));
-
-            }
-
-            @Override
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                btn_pausa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/pausa_03.png")));
-                sound.sonido("click.wav");
-
-            }
-
-            @Override
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                btn_pausa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/pausa_01.png")));
-
-            }
-
-        });
-    }
 }
-
