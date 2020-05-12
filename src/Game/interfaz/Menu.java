@@ -1,4 +1,4 @@
-    package Game.interfaz;
+package Game.interfaz;
 
 //paquetes importados
 import java.awt.*;
@@ -18,15 +18,14 @@ import javax.swing.text.StyledDocument;
  * @author Josegomz
  */
 public class Menu extends Ventana {
-    //objetos internos 
 
+    //objetos internos 
     //componentes Jpanel
     JPanel panel_menu;
     JPanel panel_acerca;
     JPanel panel_puntuacion;
-    
-    //componentes generales
 
+    //componentes generales
     //componentes menu
     private JLabel lbl_menu;
     private JLabel btn_iniciar;
@@ -41,7 +40,7 @@ public class Menu extends Ventana {
 
     //constructor vacío
     public Menu() {
-        initFrame(1000,700);
+        initFrame(1000, 700);
         cargarComponentesExtras();
         initComponentes();
         initEvent();
@@ -81,10 +80,10 @@ public class Menu extends Ventana {
         lbl_creditos.setText("<html><a href='http://www.google.com/'>Juego creado por: José Benito Gómez Sánchez</a></html>");
         lbl_creditos.setForeground(new java.awt.Color(0, 0, 0));
         lbl_creditos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        
-        
+
         //agregar los componentes al frame
-        panel_menu.add(lbl_transparente);
+        agregarConfiguracion();
+        ocultarConfiguracion();
         panel_menu.add(lbl_creditos);
         panel_menu.add(btn_conf);
         panel_menu.add(btn_cerrar);
@@ -110,14 +109,17 @@ public class Menu extends Ventana {
             protected void configureScrollBarColors() {
                 this.thumbColor = new java.awt.Color(65, 44, 23);
             }
+
             @Override
             protected JButton createDecreaseButton(int orientation) {
                 return createZeroButton();
             }
+
             @Override
             protected JButton createIncreaseButton(int orientation) {
                 return createZeroButton();
             }
+
             private JButton createZeroButton() {
                 JButton jbutton = new JButton();
                 jbutton.setPreferredSize(new Dimension(0, 0));
@@ -170,7 +172,7 @@ public class Menu extends Ventana {
                 getImage(ClassLoader.getSystemResource("/Game/img/player/hombre/Idle_1.png"));
         return retValue;
     }
-    
+
     public void cambiar_componentes(JPanel panel_actual) {
         panel_actual.add(btn_atras);
         panel_actual.add(btn_cerrar);
@@ -195,97 +197,136 @@ public class Menu extends Ventana {
         btn_iniciar.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                btn_iniciar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/iniciar_03.png")));
-                playSound("click.wav");
+                if (mouseListener) {
+                    btn_iniciar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/iniciar_03.png")));
+                    playSound("click.wav");
+                }
             }
 
             @Override
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btn_iniciar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/iniciar_02.png")));
-                playSound("click2.wav");
+                if (mouseListener) {
+                    btn_iniciar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/iniciar_02.png")));
+                    playSound("click2.wav");
+                }
             }
 
             @Override
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                btn_iniciar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/iniciar_01.png")));
+                if (mouseListener) {
+                    btn_iniciar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/iniciar_01.png")));
+                }
             }
 
             @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
-                SelectGenero selectGenero = new SelectGenero();
-                selectGenero.show();
-                stopMusic();
-                dispose();
+                if (mouseListener) {
+                    SelectGenero selectGenero = new SelectGenero();
+                    selectGenero.show();
+                    stopMusic();
+                    dispose();
+                }
             }
         });
-        
+
         btn_acerca.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                btn_acerca.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/acerca_03.png")));
-                playSound("click.wav");
+                if (mouseListener) {
+                    btn_acerca.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/acerca_03.png")));
+                    playSound("click.wav");
+                }
             }
 
             @Override
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btn_acerca.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/acerca_02.png")));
-                playSound("click2.wav");
+                if (mouseListener) {
+                    btn_acerca.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/acerca_02.png")));
+                    playSound("click2.wav");
+                }
             }
 
             @Override
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                btn_acerca.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/acerca_01.png")));
+                if (mouseListener) {
+                    btn_acerca.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/acerca_01.png")));
+                }
             }
 
             @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
-                btn_acerca.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/acerca_01.png")));
-                panel_menu.disable();
-                panel_menu.setVisible(false);
-                cambiar_componentes(panel_acerca);
+                if (mouseListener) {
+                    btn_acerca.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/acerca_01.png")));
+                    panel_menu.disable();
+                    panel_menu.setVisible(false);
+                    cambiar_componentes(panel_acerca);
+                }
             }
         });
         btn_puntuacion.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                btn_puntuacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/puntuacion_03.png")));
-                playSound("click.wav");
+                if (mouseListener) {
+                    btn_puntuacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/puntuacion_03.png")));
+                    playSound("click.wav");
+                }
             }
 
             @Override
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btn_puntuacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/puntuacion_02.png")));
-                playSound("click2.wav");
+                if (mouseListener) {
+                    btn_puntuacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/puntuacion_02.png")));
+                    playSound("click2.wav");
+                }
             }
 
             @Override
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                btn_puntuacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/puntuacion_01.png")));
+                if (mouseListener) {
+                    btn_puntuacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/puntuacion_01.png")));
+                }
             }
 
             @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
-                btn_puntuacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/puntuacion_01.png")));
-                panel_menu.disable();
-                panel_menu.setVisible(false);
-                cambiar_componentes(panel_puntuacion);
-            }
-        });
-        
-        lbl_creditos.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                try {
-                    if (Desktop.isDesktopSupported()) {
-                        Desktop desktop = Desktop.getDesktop();
-                        if (desktop.isSupported(Desktop.Action.BROWSE)) {
-                            desktop.browse(new URI("https://github.com/josegomz"));
-                        }
-                    }
-                } catch (IOException | URISyntaxException e) {
-                    System.out.println(e.getMessage());
+                if (mouseListener) {
+                    btn_puntuacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/puntuacion_01.png")));
+                    panel_menu.disable();
+                    panel_menu.setVisible(false);
+                    cambiar_componentes(panel_puntuacion);
                 }
             }
         });
+
+        lbl_creditos.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                if (mouseListener) {
+                    try {
+                        if (Desktop.isDesktopSupported()) {
+                            Desktop desktop = Desktop.getDesktop();
+                            if (desktop.isSupported(Desktop.Action.BROWSE)) {
+                                desktop.browse(new URI("https://github.com/josegomz"));
+                            }
+                        }
+                    } catch (IOException | URISyntaxException e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
+            }
+        });
+    }
+    
+    @Override
+    protected void agregarConfiguracion() {
+        panel_menu.add(lbl_musica);
+        panel_menu.add(img_musica);
+        panel_menu.add(img_sonido);
+                panel_menu.add(lbl_sonido);
+        panel_menu.add(jSlider_musica);
+        panel_menu.add(jSlider_sonido);
+        panel_menu.add(btn_cerrar_conf);
+        panel_menu.add(vnt_configuracion);
+        panel_menu.add(lbl_transparente);
     }
 }

@@ -89,7 +89,6 @@ public class Conexion {
     
     public static void main(String[] args) {
         Conexion c = new Conexion();
-        c.registrar("raul", "primo");
-        
+        c.registrar("raul", "primo");   
     }
 }
