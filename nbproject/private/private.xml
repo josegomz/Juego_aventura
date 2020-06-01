@@ -3,14 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/macbookair/NetBeansProjects/Juego_aventura/src/Game/interfaz/Configuracion.java</file>
+            <file>file:/Users/macbookair/NetBeansProjects/Juego_aventura/src/Game/interfaz/config.ini</file>
             <file>file:/Users/macbookair/NetBeansProjects/Juego_aventura/src/Game/interfaz/Jugador.java</file>
             <file>file:/Users/macbookair/NetBeansProjects/Juego_aventura/src/Game/interfaz/SelectGenero.java</file>
-            <file>file:/Users/macbookair/NetBeansProjects/Juego_aventura/src/Game/interfaz/Componentes.java</file>
             <file>file:/Users/macbookair/NetBeansProjects/Juego_aventura/src/Game/interfaz/Login.java</file>
             <file>file:/Users/macbookair/NetBeansProjects/Juego_aventura/src/Game/interfaz/Menu.java</file>
             <file>file:/Users/macbookair/NetBeansProjects/Juego_aventura/src/Game/interfaz/Conexion.java</file>
-            <file>file:/Users/macbookair/NetBeansProjects/Juego_aventura/src/Game/interfaz/Sonido.java</file>
             <file>file:/Users/macbookair/NetBeansProjects/Juego_aventura/src/Game/interfaz/Jugar.java</file>
             <file>file:/Users/macbookair/NetBeansProjects/Juego_aventura/src/Game/interfaz/Ventana.java</file>
         </group>
