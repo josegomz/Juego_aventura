@@ -1,9 +1,12 @@
 //nombre del paquete
 package Game.interfaz;
 
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -26,18 +29,20 @@ public class Jugar extends Ventana {
     JLabel btn_pausa;
     JLabel btn_reanudar;
 
+    //contructor
     public Jugar(String genero) {
         jugador = new Jugador(genero, 105, 515);
         base = new Base();
         initFrame(1000, 700);
         initEvent();
+        cargarConfiguracion();
         cargarComponentesExtras();
         initComponentes();
         componetesframe();
         playMusic("bg.wav");
         initHilo();
     }
-
+    //iniciar hilo
     private void initHilo() {
         hilo = new Movimiento();
         hilo.start();
@@ -51,71 +56,72 @@ public class Jugar extends Ventana {
         
         //boton de inicio
         btn_home = new JLabel();
-        btn_home.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/home_01.png")));
+        btn_home.setIcon(new ImageIcon("recursos/img/gui/botones/home_01.png"));
         btn_home.setSize(70, 70);
         btn_home.setLocation(10, 10);
 
         btn_pausa = new JLabel();
-        btn_pausa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/pausa_01.png")));
+        btn_pausa.setIcon(new ImageIcon("recursos/img/gui/botones/pausa_01.png"));
         btn_pausa.setSize(70, 70);
         btn_pausa.setLocation(90, 10);
 
         //eventos
-        btn_home.addMouseListener(new java.awt.event.MouseAdapter() {
+        btn_home.addMouseListener(new MouseAdapter(){
             @Override
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btn_home.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/home_02.png")));
+                btn_home.setIcon(new ImageIcon("recursos/img/gui/botones/home_02.png"));
                 playSound("click2.wav");
             }
-
             @Override
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                btn_home.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/home_01.png")));
+                btn_home.setIcon(new ImageIcon("recursos/img/gui/botones/home_01.png"));
             }
-
             @Override
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                btn_home.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/home_03.png")));
+                btn_home.setIcon(new ImageIcon("recursos/img/gui/botones/home_03.png"));
                 playSound("click.wav");
             }
-
             @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
-                btn_home.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/home_01.png")));
+                btn_home.setIcon(new ImageIcon("recursos/img/gui/botones/home_01.png"));
+                guardarConfiguracion();
                 Menu menu = new Menu();
                 stopMusic();
                 menu.show();
+                hilo.stop();
+                
                 dispose();
             }
 
         });
 
-        btn_pausa.addMouseListener(new java.awt.event.MouseAdapter() {
+        btn_pausa.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btn_pausa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/pausa_02.png")));
+                btn_pausa.setIcon(new ImageIcon("recursos/img/gui/botones/pausa_02.png"));
                 playSound("click2.wav");
             }
-
             @Override
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                btn_pausa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/pausa_01.png")));
+                btn_pausa.setIcon(new ImageIcon("recursos/img/gui/botones/pausa_01.png"));
             }
-
             @Override
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                btn_pausa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/pausa_03.png")));
+                btn_pausa.setIcon(new ImageIcon("recursos/img/gui/botones/pausa_03.png"));
                 playSound("click.wav");
             }
-
             @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
-                btn_pausa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/pausa_01.png")));
+                btn_pausa.setIcon(new ImageIcon("recursos/img/gui/botones/pausa_01.png"));
             }
 
         });
-
+        
+        btn_conf.setLocation(10, 90);
+        agregarConfiguracion(panel_jugar);
+        ocultarConfiguracion();
         panel_jugar.add(jugador.player);
+        panel_jugar.add(btn_conf);
         panel_jugar.add(btn_home);
         panel_jugar.add(btn_pausa);
         panel_jugar.add(btn_cerrar);
@@ -129,7 +135,7 @@ public class Jugar extends Ventana {
 
     @Override
     protected void initEvent() {
-        addKeyListener(new java.awt.event.KeyAdapter() {
+        addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 int kevt = evt.getExtendedKeyCode();
@@ -282,7 +288,7 @@ public class Jugar extends Ventana {
                 tile_02[i] = new JLabel();
                 tile_02[i].setSize(83, 60);
                 tile_02[i].setLocation(posX + (i * 83), posY);
-                tile_02[i].setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/tiles/" + (13 + i) + ".png")));
+                tile_02[i].setIcon(new ImageIcon("recursos/img/tiles/" + (13 + i) + ".png"));
 
             }
         }
@@ -311,14 +317,14 @@ public class Jugar extends Ventana {
                 tile_01[i] = new JLabel();
                 tile_01[i].setSize(60, 60);
                 tile_01[i].setLocation((60 * i), 640);
-                tile_01[i].setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/tiles/2.png")));
+                tile_01[i].setIcon(new ImageIcon("recursos/img/tiles/2.png"));
             }
             fondo = new JLabel[2];
             for (int i = 0; i < 2; i++) {
                 fondo[i] = new JLabel();
                 fondo[i].setSize(1000, 700);
                 fondo[i].setLocation(i * 1000, 0);
-                fondo[i].setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/bg/BG1.png"))); // NOI18N
+                fondo[i].setIcon(new ImageIcon("recursos/img/bg/BG1.png"));
             }
         }
 

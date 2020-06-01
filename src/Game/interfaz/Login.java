@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -47,7 +48,7 @@ public class Login extends Ventana{
         btn_ok = new JLabel();
         btn_ok.setSize(200, 67);
         btn_ok.setLocation(100, 270);
-        btn_ok.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/entrar_01.png"))); // NOI18N
+        btn_ok.setIcon(new ImageIcon("recursos/img/gui/botones/entrar_01.png"));
         
         lbl_username = new JLabel();
         lbl_password = new JLabel();
@@ -119,24 +120,24 @@ public class Login extends Ventana{
         btn_ok.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                btn_ok.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/entrar_03.png")));
+                btn_ok.setIcon(new ImageIcon("recursos/img/gui/botones/entrar_03.png"));
                 playSound("click.wav");
             }
 
             @Override
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btn_ok.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/entrar_02.png")));
+                btn_ok.setIcon(new ImageIcon("recursos/img/gui/botones/entrar_02.png"));
                 playSound("click2.wav");
             }
 
             @Override
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                btn_ok.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/entrar_01.png")));
+                btn_ok.setIcon(new ImageIcon("recursos/img/gui/botones/entrar_01.png"));
             }
 
             @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
-                btn_ok.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/entrar_01.png")));
+                btn_ok.setIcon(new ImageIcon("recursos/img/gui/botones/entrar_01.png"));
                 Menu menu = new Menu();
                 menu.show();
                 dispose();
@@ -148,6 +149,7 @@ public class Login extends Ventana{
     //metodo principal
     public static void main(String[] args) {
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new Login().setVisible(true);
             }

@@ -1,5 +1,6 @@
 package Game.interfaz;
 
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 /**
@@ -36,7 +37,7 @@ public class Jugador{
     
     //pinta un frame de la animación del jugador parado
     public void paint(int numero){
-        player.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/player/"+genero+"/Idle_"+numero+".png")));
+        player.setIcon(new ImageIcon("recursos/img/player/"+genero+"/Idle_"+numero+".png"));
     }
     
     /**
@@ -44,10 +45,10 @@ public class Jugador{
      * @param numero 
      */
     public void paint_walk(int numero){
-        player.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/player/"+genero+"/Walk_"+numero+".png")));
+        player.setIcon(new ImageIcon("recursos/img/player/"+genero+"/Walk_"+numero+".png"));
     }
     public void paint_jump(int numero){
-        player.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/player/"+genero+"/Jump_"+numero+".png")));
+        player.setIcon(new ImageIcon("recursos/img/player/"+genero+"/Jump_"+numero+".png"));
     }
     
     /**
@@ -65,7 +66,7 @@ public class Jugador{
         return player.getY();
     }
     
-    
+    //mover al jugador a la izquierda
     public void moverIzquierda(){
         if(player.getX() > 0){
             player.setLocation(player.getX() -velocidadx, player.getY());

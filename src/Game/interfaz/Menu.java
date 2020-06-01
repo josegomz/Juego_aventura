@@ -41,11 +41,12 @@ public class Menu extends Ventana {
     //constructor vacío
     public Menu() {
         initFrame(1000, 700);
+        cargarConfiguracion();
         cargarComponentesExtras();
+        playMusic("Osondoar.wav");
         initComponentes();
         initEvent();
-        componentsFrame();
-        playMusic("Osondoar.wav");
+        componentsFrame(); 
     }
 
     @Override
@@ -54,22 +55,22 @@ public class Menu extends Ventana {
         panel_menu = getPanel();
         //botones
         btn_iniciar = new JLabel();
-        btn_iniciar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/iniciar_01.png"))); // NOI18N
+        btn_iniciar.setIcon(new ImageIcon("recursos/img/gui/botones/iniciar_01.png"));
         btn_iniciar.setSize(300, 100);
         btn_iniciar.setLocation(350, 200);
 
         btn_acerca = new JLabel();
-        btn_acerca.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/acerca_01.png"))); // NOI18N
+        btn_acerca.setIcon(new ImageIcon("recursos/img/gui/botones/acerca_01.png"));
         btn_acerca.setSize(300, 100);
         btn_acerca.setLocation(350, 420);
 
         btn_puntuacion = new JLabel();
-        btn_puntuacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/puntuacion_01.png")));
+        btn_puntuacion.setIcon(new ImageIcon("recursos/img/gui/botones/puntuacion_01.png"));
         btn_puntuacion.setSize(300, 100);
         btn_puntuacion.setLocation(350, 310);
 
         lbl_menu = new JLabel();
-        lbl_menu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/ventana/menu_01.png"))); // NOI18N
+        lbl_menu.setIcon(new ImageIcon("recursos/Game/img/gui/ventana/menu_01.png"));
         lbl_menu.setSize(450, 500);
         lbl_menu.setLocation(275, 100);
 
@@ -82,7 +83,7 @@ public class Menu extends Ventana {
         lbl_creditos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         //agregar los componentes al frame
-        agregarConfiguracion();
+        agregarConfiguracion(panel_menu);
         ocultarConfiguracion();
         panel_menu.add(lbl_creditos);
         panel_menu.add(btn_conf);
@@ -148,7 +149,7 @@ public class Menu extends Ventana {
 
         //botones
         lbl_ventanaAD = new JLabel();
-        lbl_ventanaAD.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/ventana/acerca_de_01.png"))); // NOI18N
+        lbl_ventanaAD.setIcon(new ImageIcon("recursos/img/gui/ventana/acerca_de_01.png"));
         lbl_ventanaAD.setSize(800, 600);
         lbl_ventanaAD.setLocation(100, 50);
 
@@ -165,14 +166,14 @@ public class Menu extends Ventana {
         getContentPane().add(panel_acerca);
         getContentPane().add(panel_puntuacion);
     }
-
+    /*
     @Override
     public Image getIconImage() {
         Image retValue = Toolkit.getDefaultToolkit().
                 getImage(ClassLoader.getSystemResource("/Game/img/player/hombre/Idle_1.png"));
         return retValue;
     }
-
+    */
     public void cambiar_componentes(JPanel panel_actual) {
         panel_actual.add(btn_atras);
         panel_actual.add(btn_cerrar);
@@ -181,7 +182,7 @@ public class Menu extends Ventana {
         btn_atras.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
-                btn_atras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/atras_01.png")));
+                btn_atras.setIcon(new ImageIcon("recursos/img/gui/botones/atras_01.png"));
                 panel_menu.setVisible(true);
                 panel_menu.enable();
                 panel_actual.disable();
@@ -198,7 +199,7 @@ public class Menu extends Ventana {
             @Override
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 if (mouseListener) {
-                    btn_iniciar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/iniciar_03.png")));
+                    btn_iniciar.setIcon(new ImageIcon("recursos/img/gui/botones/iniciar_03.png"));
                     playSound("click.wav");
                 }
             }
@@ -206,7 +207,7 @@ public class Menu extends Ventana {
             @Override
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 if (mouseListener) {
-                    btn_iniciar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/iniciar_02.png")));
+                    btn_iniciar.setIcon(new ImageIcon("recursos/img/gui/botones/iniciar_02.png"));
                     playSound("click2.wav");
                 }
             }
@@ -214,13 +215,14 @@ public class Menu extends Ventana {
             @Override
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 if (mouseListener) {
-                    btn_iniciar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/iniciar_01.png")));
+                    btn_iniciar.setIcon(new ImageIcon("recursos/img/gui/botones/iniciar_01.png"));
                 }
             }
 
             @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 if (mouseListener) {
+                    guardarConfiguracion();
                     SelectGenero selectGenero = new SelectGenero();
                     selectGenero.show();
                     stopMusic();
@@ -233,7 +235,7 @@ public class Menu extends Ventana {
             @Override
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 if (mouseListener) {
-                    btn_acerca.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/acerca_03.png")));
+                    btn_acerca.setIcon(new ImageIcon("recursos/img/gui/botones/acerca_03.png"));
                     playSound("click.wav");
                 }
             }
@@ -241,7 +243,7 @@ public class Menu extends Ventana {
             @Override
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 if (mouseListener) {
-                    btn_acerca.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/acerca_02.png")));
+                    btn_acerca.setIcon(new ImageIcon("recursos/img/gui/botones/acerca_02.png"));
                     playSound("click2.wav");
                 }
             }
@@ -249,14 +251,14 @@ public class Menu extends Ventana {
             @Override
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 if (mouseListener) {
-                    btn_acerca.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/acerca_01.png")));
+                    btn_acerca.setIcon(new ImageIcon("recursos/img/gui/botones/acerca_01.png"));
                 }
             }
 
             @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 if (mouseListener) {
-                    btn_acerca.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/acerca_01.png")));
+                    btn_acerca.setIcon(new ImageIcon("recursos/img/gui/botones/acerca_01.png"));
                     panel_menu.disable();
                     panel_menu.setVisible(false);
                     cambiar_componentes(panel_acerca);
@@ -267,7 +269,7 @@ public class Menu extends Ventana {
             @Override
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 if (mouseListener) {
-                    btn_puntuacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/puntuacion_03.png")));
+                    btn_puntuacion.setIcon(new ImageIcon("recursos/img/gui/botones/puntuacion_03.png"));
                     playSound("click.wav");
                 }
             }
@@ -275,7 +277,7 @@ public class Menu extends Ventana {
             @Override
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 if (mouseListener) {
-                    btn_puntuacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/puntuacion_02.png")));
+                    btn_puntuacion.setIcon(new ImageIcon("recursos/img/gui/botones/puntuacion_02.png"));
                     playSound("click2.wav");
                 }
             }
@@ -283,14 +285,14 @@ public class Menu extends Ventana {
             @Override
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 if (mouseListener) {
-                    btn_puntuacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/puntuacion_01.png")));
+                    btn_puntuacion.setIcon(new ImageIcon("recursos/img/gui/botones/puntuacion_01.png"));
                 }
             }
 
             @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 if (mouseListener) {
-                    btn_puntuacion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Game/img/gui/botones/puntuacion_01.png")));
+                    btn_puntuacion.setIcon(new ImageIcon("recursos/img/gui/botones/puntuacion_01.png"));
                     panel_menu.disable();
                     panel_menu.setVisible(false);
                     cambiar_componentes(panel_puntuacion);
@@ -317,16 +319,4 @@ public class Menu extends Ventana {
         });
     }
     
-    @Override
-    protected void agregarConfiguracion() {
-        panel_menu.add(lbl_musica);
-        panel_menu.add(img_musica);
-        panel_menu.add(img_sonido);
-                panel_menu.add(lbl_sonido);
-        panel_menu.add(jSlider_musica);
-        panel_menu.add(jSlider_sonido);
-        panel_menu.add(btn_cerrar_conf);
-        panel_menu.add(vnt_configuracion);
-        panel_menu.add(lbl_transparente);
-    }
 }
