@@ -1,5 +1,5 @@
 //nombre del paquete
-package Game.interfaz;
+package interfaz;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;

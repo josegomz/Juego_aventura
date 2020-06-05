@@ -1,4 +1,4 @@
-package Game.interfaz;
+package interfaz;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -12,7 +12,6 @@ public class Jugador{
     public int posY;
     private final int velocidadx = 10;
     private final int velocidady = 25;
-    Conexion conexion;
     JLabel player;
 
     //informacion importante del jugador en el juego;

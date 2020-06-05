@@ -3,11 +3,12 @@
  * interfaces
  */
 
-package Game.interfaz;
+package interfaz;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.Image;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -146,7 +147,7 @@ public abstract class Ventana extends JFrame {
         btn_cerrar.setLocation(920, 10);
 
         btn_cerrar_conf = new JLabel();
-        btn_cerrar_conf.setIcon(new ImageIcon("recursos/img/gui/botones/salir_04.png")); 
+        btn_cerrar_conf.setIcon(getImageIconResized(new ImageIcon("recursos/img/gui/botones/salir_01.png"), 50, 50));
         btn_cerrar_conf.setSize(50, 50);
         btn_cerrar_conf.setLocation(690, 250);
 
@@ -185,7 +186,6 @@ public abstract class Ventana extends JFrame {
         jSlider_musica.setPaintTicks(true);
         jSlider_sonido.setMajorTickSpacing(50);
         jSlider_sonido.setPaintTicks(true);
-        System.out.println("volumenes: "+vol_music+"   "+vol_sound);
         Double vol1 = vol_music*100;
         Double vol2 = vol_sound*100;   
         jSlider_musica.setValue(vol1.intValue());
@@ -259,7 +259,8 @@ public abstract class Ventana extends JFrame {
             @Override
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 if (config) {
-                    btn_cerrar_conf.setIcon(new ImageIcon("recursos/img/gui/botones/salir_06.png"));
+                    btn_cerrar_conf.setIcon(getImageIconResized(new ImageIcon("recursos/img/gui/botones/salir_03.png"), 50, 50));
+
                     playSound("click.wav");
                 }
             }
@@ -267,7 +268,7 @@ public abstract class Ventana extends JFrame {
             @Override
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 if (config) {
-                    btn_cerrar_conf.setIcon(new ImageIcon("recursos/img/gui/botones/salir_05.png"));
+                    btn_cerrar_conf.setIcon(getImageIconResized(new ImageIcon("recursos/img/gui/botones/salir_02.png"), 50, 50));
                     playSound("click2.wav");
                 }
             }
@@ -275,14 +276,14 @@ public abstract class Ventana extends JFrame {
             @Override
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 if (config) {
-                    btn_cerrar_conf.setIcon(new ImageIcon("recursos/img/gui/botones/salir_04.png"));
+                    btn_cerrar_conf.setIcon(getImageIconResized(new ImageIcon("recursos/img/gui/botones/salir_01.png"), 50, 50));
                 }
             }
 
             @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 if (config) {
-                    btn_cerrar_conf.setIcon(new ImageIcon("recursos/img/gui/botones/salir_04.png"));
+                    btn_cerrar_conf.setIcon(getImageIconResized(new ImageIcon("recursos/img/gui/botones/salir_01.png"), 50, 50));
                     ocultarConfiguracion();
                 }
             }
@@ -446,5 +447,12 @@ public abstract class Ventana extends JFrame {
             JOptionPane.showMessageDialog(null, "Error", "Error al guardar la configuracion", JOptionPane.WARNING_MESSAGE);
             Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public ImageIcon getImageIconResized(ImageIcon imageIcon,int ancho, int alto){
+        Image image = imageIcon.getImage(); // transform it 
+        Image newimg = image.getScaledInstance(ancho, alto,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+        imageIcon = new ImageIcon(newimg);  // transform it back
+        return imageIcon;
     }
 }

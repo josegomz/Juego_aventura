@@ -1,4 +1,4 @@
-package Game.interfaz;
+package interfaz;
 
 //paquetes importados
 import java.awt.*;
@@ -78,7 +78,7 @@ public class Menu extends Ventana {
         lbl_creditos.setFont(new java.awt.Font("Tahoma", 0, 10));
         lbl_creditos.setSize(250, 40);
         lbl_creditos.setLocation(750, 660);
-        lbl_creditos.setText("<html><a href='http://www.google.com/'>Juego creado por: José Benito Gómez Sánchez</a></html>");
+        lbl_creditos.setText("<html><a href=''>Juego creado por: José Benito Gómez Sánchez</a></html>");
         lbl_creditos.setForeground(new java.awt.Color(0, 0, 0));
         lbl_creditos.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
