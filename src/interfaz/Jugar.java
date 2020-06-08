@@ -1,6 +1,8 @@
 //nombre del paquete
 package interfaz;
 
+import entrada.Teclado;
+import graficos.Obstaculos;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -14,15 +16,30 @@ import javax.swing.JPanel;
  *
  * @author Josegomz
  */
-public class Jugar extends Ventana {
-
+public class Jugar extends Ventana implements Runnable {
+    //condicion de salida
+    private int vida = 60;
+    private boolean running = false;
+    //fotogramas por segundo
+    private static int FPS=60;
+    private double TARGETTIME=1000000000/FPS;
+    private double delta=0;
+    private int AVERAGEFPS=FPS;
+    
+    private Thread thread;
     final int NUM_OBSTACULOS = 5;
     //variables de objeto
-    Movimiento hilo;
     Jugador jugador;
     Obstaculos obstaculos[];
+    //diseñamos las posiciones de los obstaculos manualmente
+    int pos_obstaculos[][]={{300,500},{550,400},{900,500},{1150,530},{1400,400}};
+    
     Base base;
-
+    Teclado teclado;
+    
+    JLabel enemigo;
+    JLabel barra_vida;
+    JLabel lbl_vida;
     JPanel panel_jugar;
     JPanel panel_pausa;
     JLabel btn_home;
@@ -34,18 +51,30 @@ public class Jugar extends Ventana {
         jugador = new Jugador(genero, 105, 515);
         base = new Base();
         initFrame(1000, 700);
+        teclado = new Teclado();
         initEvent();
         cargarConfiguracion();
         cargarComponentesExtras();
         initComponentes();
         componetesframe();
         playMusic("bg.wav");
-        initHilo();
+        start();
     }
+
     //iniciar hilo
-    private void initHilo() {
-        hilo = new Movimiento();
-        hilo.start();
+    private void start() {
+        thread = new Thread(this);
+        thread.start();
+        running=true;
+    }
+    
+    private void stop(){
+        try {
+            thread.join();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Jugar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        running=false;
     }
 
     @Override
@@ -53,7 +82,12 @@ public class Jugar extends Ventana {
         panel_jugar = getPanel();
         //agregamos los obstaculos 
         obstaculos = new Obstaculos[NUM_OBSTACULOS];
-        
+
+        enemigo = new JLabel();
+        enemigo.setSize(100, 100);
+        enemigo.setLocation(250, 530);
+        enemigo.setIcon(new ImageIcon("recursos/img/player/source.gif"));
+
         //boton de inicio
         btn_home = new JLabel();
         btn_home.setIcon(new ImageIcon("recursos/img/gui/botones/home_01.png"));
@@ -66,21 +100,24 @@ public class Jugar extends Ventana {
         btn_pausa.setLocation(90, 10);
 
         //eventos
-        btn_home.addMouseListener(new MouseAdapter(){
+        btn_home.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btn_home.setIcon(new ImageIcon("recursos/img/gui/botones/home_02.png"));
                 playSound("click2.wav");
             }
+
             @Override
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btn_home.setIcon(new ImageIcon("recursos/img/gui/botones/home_01.png"));
             }
+
             @Override
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 btn_home.setIcon(new ImageIcon("recursos/img/gui/botones/home_03.png"));
                 playSound("click.wav");
             }
+
             @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 btn_home.setIcon(new ImageIcon("recursos/img/gui/botones/home_01.png"));
@@ -88,8 +125,7 @@ public class Jugar extends Ventana {
                 Menu menu = new Menu();
                 stopMusic();
                 menu.show();
-                hilo.stop();
-                
+
                 dispose();
             }
 
@@ -101,15 +137,18 @@ public class Jugar extends Ventana {
                 btn_pausa.setIcon(new ImageIcon("recursos/img/gui/botones/pausa_02.png"));
                 playSound("click2.wav");
             }
+
             @Override
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btn_pausa.setIcon(new ImageIcon("recursos/img/gui/botones/pausa_01.png"));
             }
+
             @Override
             public void mousePressed(java.awt.event.MouseEvent evt) {
                 btn_pausa.setIcon(new ImageIcon("recursos/img/gui/botones/pausa_03.png"));
                 playSound("click.wav");
             }
+
             @Override
             public void mouseReleased(java.awt.event.MouseEvent evt) {
                 btn_pausa.setIcon(new ImageIcon("recursos/img/gui/botones/pausa_01.png"));
@@ -117,17 +156,31 @@ public class Jugar extends Ventana {
 
         });
         
+        barra_vida = new JLabel();
+        barra_vida.setSize(296, 70);
+        barra_vida.setLocation(170, 10);
+        barra_vida.setIcon(new ImageIcon("recursos/img/gui/ventana/barra_vida2.png"));
+        
+        lbl_vida = new JLabel();
+        lbl_vida.setSize(vida*2, 30);
+        lbl_vida.setLocation(240, 30);
+        lbl_vida.setIcon(getImageIconResized(new ImageIcon("recursos/img/gui/ventana/vida.png"),200,30));
+
+        
+
         btn_conf.setLocation(10, 90);
         agregarConfiguracion(panel_jugar);
         ocultarConfiguracion();
+        //panel_jugar.add(enemigo);
         panel_jugar.add(jugador.player);
+        panel_jugar.add(lbl_vida);
+        panel_jugar.add(barra_vida);
         panel_jugar.add(btn_conf);
         panel_jugar.add(btn_home);
         panel_jugar.add(btn_pausa);
-        panel_jugar.add(btn_cerrar);
         for (int i = 0; i < NUM_OBSTACULOS; i++) {
-            obstaculos[i] = new Obstaculos(i * 450 + 300, 500);
-            obstaculos[i].agregar();
+            obstaculos[i] = new Obstaculos(pos_obstaculos[i][0],pos_obstaculos[i][1]);
+            obstaculos[i].agregar(panel_jugar);
         }
         base.agregar();
         base.agregar_fondo();
@@ -135,6 +188,8 @@ public class Jugar extends Ventana {
 
     @Override
     protected void initEvent() {
+        //addKeyListener(teclado);
+        
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -166,7 +221,7 @@ public class Jugar extends Ventana {
                 }
             }
         });
-
+        
     }
 
     private void componetesframe() {
@@ -178,133 +233,123 @@ public class Jugar extends Ventana {
     private boolean estadoizquierda;
     private boolean salto;
 
-    //hilo que se encarga del movimiento
-    private class Movimiento extends Thread {
+    private void update(){
+        
+    }
+    private void draw(){
+    }
+    @Override
+    public void run() {
+        long now = 0;
+        long lastTime=System.nanoTime();
+        int frames=0;
+        long time=0;
+        
+        while (running) {
+            
+            now = System.nanoTime();
+            delta +=(now-lastTime)/TARGETTIME;
+            time +=(now-lastTime);
+            lastTime=now;
+            if(delta>=1){
+                update();
+                draw();
+                delta--;
+                frames++;
+                setTitle("Juego aventura || FPS: "+AVERAGEFPS+"  || frames: "+frames);
 
-        @Override
-        public void run() {
-            while (true) {
-                System.out.println("");
+            }
+            if(time>=1000000000){
+                AVERAGEFPS=frames;
+                frames=0;
+                time=0;
+            }
+            
 
-                //cuando se mueve el jugador a la derecha >-> >->
-                if (estadoderecha) {
-                    for (int j = 0; j < NUM_OBSTACULOS; j++) {
-                        obstaculos[j].mover(-20);
+            //cuando se mueve el jugador a la derecha >-> >->
+            if (estadoderecha) {
+                for (int j = 0; j < NUM_OBSTACULOS; j++) {
+                    obstaculos[j].mover(-30);
+                }
+                base.mover(-30, -10);
+                playSound("sfx_step_rock_r.wav");
+                for (int i = 1; i <= 8; i++) {
+                    try {
+                        Thread.sleep(30);
+                        jugador.paint_walk(i);
+                        if (i == 4) {
+                            playSound("sfx_step_rock_r.wav");
+                        }
+                        jugador.moverDerecha();
+                        Thread.sleep(30);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Jugar.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    base.mover(-20, -5);
-                    playSound("sfx_step_rock_r.wav");
-                    for (int i = 1; i <= 8; i++) {
-                        try {
-                            Thread.sleep(30);
-                            jugador.paint_walk(i);
-                            if (i == 4) {
-                                playSound("sfx_step_rock_r.wav");
-                            }
+                }
+
+            }
+
+            //cuando el jugador se mueve a la izquierda <-< <-<
+            if (estadoizquierda) {
+                playSound("sfx_step_rock_l.wav");
+                for (int i = 1; i <= 8; i++) {
+                    try {
+                        Thread.sleep(35);
+                        jugador.paint_walk(i + 8);
+                        if (i == 4) {
+                            playSound("sfx_step_rock_r.wav");
+                        }
+                        jugador.moverIzquierda();
+                        Thread.sleep(35);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Jugar.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+
+            //cuando el jugador salta 
+            if (!estadoderecha && !estadoizquierda) {
+                for (int i = 1; i <= 8; i++) {
+                    try {
+                        Thread.sleep(50);
+                        jugador.paint(i);
+                        Thread.sleep(50);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Jugar.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+            if (salto) {
+                playSound("sfx_step_rock_l.wav");
+                for (int i = 1; i <= 15; i++) {
+                    try {
+                        Thread.sleep(20);
+                        jugador.paint_jump(i);
+                        if (i <= 8) {
+                            jugador.moverArriba();
+                        } else {
+                            jugador.moverAbajo();
+                        }
+
+                        if (estadoderecha) {
                             jugador.moverDerecha();
-                            Thread.sleep(30);
-                        } catch (InterruptedException ex) {
-                            Logger.getLogger(Jugar.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
-
-                }
-
-                //cuando el jugador se mueve a la izquierda <-< <-<
-                if (estadoizquierda) {
-                    playSound("sfx_step_rock_l.wav");
-                    for (int i = 1; i <= 8; i++) {
-                        try {
-                            Thread.sleep(35);
-                            jugador.paint_walk(i + 8);
-                            if (i == 4) {
-                                playSound("sfx_step_rock_r.wav");
-                            }
+                        } else if (estadoizquierda) {
                             jugador.moverIzquierda();
-                            Thread.sleep(35);
-                        } catch (InterruptedException ex) {
-                            Logger.getLogger(Jugar.class.getName()).log(Level.SEVERE, null, ex);
                         }
+                        Thread.sleep(20);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Jugar.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                }
 
-                //cuando el jugador salta 
-                if (!estadoderecha && !estadoizquierda) {
-                    for (int i = 1; i <= 8; i++) {
-                        try {
-                            Thread.sleep(50);
-                            jugador.paint(i);
-                            Thread.sleep(50);
-                        } catch (InterruptedException ex) {
-                            Logger.getLogger(Jugar.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
                 }
-                if (salto) {
-                    playSound("sfx_step_rock_l.wav");
-                    for (int i = 1; i <= 15; i++) {
-                        try {
-                            Thread.sleep(20);
-                            jugador.paint_jump(i);
-                            if (i <= 8) {
-                                jugador.moverArriba();
-                            } else {
-                                jugador.moverAbajo();
-                            }
-
-                            if (estadoderecha) {
-                                jugador.moverDerecha();
-                            } else if (estadoizquierda) {
-                                jugador.moverIzquierda();
-                            }
-                            Thread.sleep(20);
-                        } catch (InterruptedException ex) {
-                            Logger.getLogger(Jugar.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-
-                    }
-                    jugador.moverAbajo();
-                    playSound("sfx_step_rock_l.wav");
-                    salto = false;
-                }
+                jugador.moverAbajo();
+                playSound("sfx_step_rock_l.wav");
+                salto = false;
             }
         }
     }
 
-    private class Obstaculos {
-
-        int posX;
-        int posY;
-        JLabel[] tile_02;
-
-        public Obstaculos(int posX, int posY) {
-            this.posX = posX;
-            this.posY = posY;
-            initComponents();
-        }
-
-        private void initComponents() {
-            tile_02 = new JLabel[3];
-            for (int i = 0; i < 3; i++) {
-                tile_02[i] = new JLabel();
-                tile_02[i].setSize(83, 60);
-                tile_02[i].setLocation(posX + (i * 83), posY);
-                tile_02[i].setIcon(new ImageIcon("recursos/img/tiles/" + (13 + i) + ".png"));
-
-            }
-        }
-
-        private void agregar() {
-            panel_jugar.add(tile_02[0]);
-            panel_jugar.add(tile_02[1]);
-            panel_jugar.add(tile_02[2]);
-        }
-
-        private void mover(int paso) {
-            for (int i = 0; i < 3; i++) {
-                tile_02[i].setLocation(tile_02[i].getX() + paso, tile_02[i].getY());
-            }
-        }
-    }
+    
 
     private class Base {
 
@@ -324,7 +369,7 @@ public class Jugar extends Ventana {
                 fondo[i] = new JLabel();
                 fondo[i].setSize(1000, 700);
                 fondo[i].setLocation(i * 1000, 0);
-                fondo[i].setIcon(new ImageIcon("recursos/img/bg/BG1.png"));
+                fondo[i].setIcon(new ImageIcon("recursos/img/bg/BG11.png"));
             }
         }
 

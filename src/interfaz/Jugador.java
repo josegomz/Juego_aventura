@@ -68,7 +68,7 @@ public class Jugador{
     //mover al jugador a la izquierda
     public void moverIzquierda(){
         if(player.getX() > 0){
-            player.setLocation(player.getX() -velocidadx, player.getY());
+            player.setLocation(player.getX() -(velocidadx+10), player.getY());
             posX -= velocidadx;
             
         }

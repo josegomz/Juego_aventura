@@ -5,7 +5,9 @@
 
 package interfaz;
 
+import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Image;
@@ -23,6 +25,8 @@ import org.ini4j.*;
  * @author josegomz
  */
 public abstract class Ventana extends JFrame {
+    
+    public static int ANCHO=1000,ALTO=700;
 
     protected boolean mouseListener = true;
     protected boolean config = false;
@@ -41,6 +45,8 @@ public abstract class Ventana extends JFrame {
     protected JSlider jSlider_sonido;
     protected JLabel vnt_configuracion;
     protected JLabel lbl_transparente;
+    
+    public Canvas canvas;
 
     //background 
     protected JLabel fondo;
@@ -49,14 +55,14 @@ public abstract class Ventana extends JFrame {
     public double vol_sound = 1.0;
     public double vol_music = 1.0;
     //Buttons
-    protected JLabel btn_cerrar;
     protected JLabel btn_atras;
     protected JLabel btn_conf;
 
     //inicia el frame centrado y con el ancho y alto especificados
     public void initFrame(int width, int heigth) {
+        setTitle("Aventura");
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setUndecorated(true);//borra el boton ampliar minimizar y cerrar que trae por default
+        //setUndecorated(true);//borra el boton ampliar minimizar y cerrar que trae por default
         setResizable(false);//evita cambiar de tamaño
         GroupLayout layout = new GroupLayout(getContentPane());//crea la capa a partir del frame
         getContentPane().setLayout(layout);//agrega una capa 
@@ -64,6 +70,8 @@ public abstract class Ventana extends JFrame {
         layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, heigth, Short.MAX_VALUE));
         pack();
         setLocationRelativeTo(null);//centra le ventata
+        
+        
     }
 
     protected abstract void initComponentes();
@@ -140,11 +148,6 @@ public abstract class Ventana extends JFrame {
         fondo = new JLabel();
         fondo.setSize(1000, 700);
         fondo.setIcon(new ImageIcon("recursos/img/bg/BG1.png"));
-        //boton cerrar
-        btn_cerrar = new JLabel();
-        btn_cerrar.setIcon(new ImageIcon("recursos/img/gui/botones/salir_01.png"));
-        btn_cerrar.setSize(70, 70);
-        btn_cerrar.setLocation(920, 10);
 
         btn_cerrar_conf = new JLabel();
         btn_cerrar_conf.setIcon(getImageIconResized(new ImageIcon("recursos/img/gui/botones/salir_01.png"), 50, 50));
@@ -223,38 +226,6 @@ public abstract class Ventana extends JFrame {
 
     //carga  los eventos de los componentes extras que se iniciaron
     private void cargarEventos() {
-        btn_cerrar.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                if (mouseListener) {
-                    btn_cerrar.setIcon(new ImageIcon("recursos/img/gui/botones/salir_03.png"));
-                    playSound("click.wav");
-                }
-            }
-
-            @Override
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                if (mouseListener) {
-                    btn_cerrar.setIcon(new ImageIcon("recursos/img/gui/botones/salir_02.png"));
-                    playSound("click2.wav");
-                }
-            }
-
-            @Override
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                if (mouseListener) {
-                    btn_cerrar.setIcon(new ImageIcon("recursos/img/gui/botones/salir_01.png"));
-                }
-            }
-
-            @Override
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                if (mouseListener) {
-                    guardarConfiguracion();
-                    System.exit(0);
-                }
-            }
-        });
         btn_cerrar_conf.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mousePressed(java.awt.event.MouseEvent evt) {
@@ -455,4 +426,5 @@ public abstract class Ventana extends JFrame {
         imageIcon = new ImageIcon(newimg);  // transform it back
         return imageIcon;
     }
+    
 }

@@ -97,42 +97,6 @@ public class Login extends Ventana {
         txt_password.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         txt_password.setBorder(null);
 
-        btn_cerrar.setSize(50, 50);
-        btn_cerrar.setLocation(340, 10);
-        btn_cerrar.setIcon(getImageIconResized(new ImageIcon("recursos/img/gui/botones/salir_01.png"), 50, 50));
-        btn_cerrar.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                if (mouseListener) {
-                    btn_cerrar.setIcon(getImageIconResized(new ImageIcon("recursos/img/gui/botones/salir_03.png"), 50, 50));
-                    playSound("click.wav");
-                }
-            }
-
-            @Override
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                if (mouseListener) {
-                    btn_cerrar.setIcon(getImageIconResized(new ImageIcon("recursos/img/gui/botones/salir_02.png"), 50, 50));
-                    playSound("click2.wav");
-                }
-            }
-
-            @Override
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                if (mouseListener) {
-                    btn_cerrar.setIcon(getImageIconResized(new ImageIcon("recursos/img/gui/botones/salir_01.png"), 50, 50));
-                }
-            }
-
-            @Override
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                if (mouseListener) {
-                    guardarConfiguracion();
-                    System.exit(0);
-                }
-            }
-        });
-
         lbl_crear_cuenta = new JLabel();
         try {
             lbl_crear_cuenta.setFont(getFont(25));
@@ -189,7 +153,6 @@ public class Login extends Ventana {
         panel_login.add(txt_password);
         panel_login.add(btn_ok);
         panel_login.add(titulo);
-        panel_login.add(btn_cerrar);
         panel_login.add(fondo);
 
     }

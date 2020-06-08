@@ -2,13 +2,22 @@ package interfaz;
 
 //paquetes importados
 import java.awt.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicScrollBarUI;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
@@ -38,6 +47,13 @@ public class Menu extends Ventana {
     private JScrollPane scroll_AD;
     private JTextPane lbl_acerca;
 
+    //cmponentes puntuacion
+    private JLabel lbl_ventanaP;
+    private JTable tabla_puntuacion;
+    private DefaultTableModel modelo;
+    String[] titulo_tabla = {"Nombre", "Puntuacion"};
+    private JScrollPane jScrollPane1;
+
     //constructor vacío
     public Menu() {
         initFrame(1000, 700);
@@ -46,7 +62,7 @@ public class Menu extends Ventana {
         playMusic("Osondoar.wav");
         initComponentes();
         initEvent();
-        componentsFrame(); 
+        componentsFrame();
     }
 
     @Override
@@ -87,7 +103,6 @@ public class Menu extends Ventana {
         ocultarConfiguracion();
         panel_menu.add(lbl_creditos);
         panel_menu.add(btn_conf);
-        panel_menu.add(btn_cerrar);
         panel_menu.add(titulo);
         panel_menu.add(btn_iniciar);
         panel_menu.add(btn_puntuacion);
@@ -140,6 +155,7 @@ public class Menu extends Ventana {
         } catch (FontFormatException | IOException ex) {
             Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
         }
+        lbl_acerca.setCaretPosition(0);
         lbl_acerca.setEditable(false);
         StyledDocument doc = lbl_acerca.getStyledDocument();
         SimpleAttributeSet center = new SimpleAttributeSet();
@@ -158,7 +174,107 @@ public class Menu extends Ventana {
         //puntuación
         panel_puntuacion = getPanel();
         panel_puntuacion.setVisible(false);
+        tabla_puntuacion = new JTable();
+        jScrollPane1 = new JScrollPane();
+        jScrollPane1.setSize(620, 330);
+        jScrollPane1.setBorder(null);
+        jScrollPane1.setLocation(190, 210);
+        jScrollPane1.setBackground(new Color(213, 173, 81));
+        jScrollPane1.setViewportView(tabla_puntuacion);
+        jScrollPane1.getVerticalScrollBar().setBackground(new java.awt.Color(193, 153, 61));
+        jScrollPane1.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+            @Override
+            protected void configureScrollBarColors() {
+                this.thumbColor = new java.awt.Color(65, 44, 23);
+            }
 
+            @Override
+            protected JButton createDecreaseButton(int orientation) {
+                return createZeroButton();
+            }
+
+            @Override
+            protected JButton createIncreaseButton(int orientation) {
+                return createZeroButton();
+            }
+
+            private JButton createZeroButton() {
+                JButton jbutton = new JButton();
+                jbutton.setPreferredSize(new Dimension(0, 0));
+                jbutton.setMinimumSize(new Dimension(0, 0));
+                jbutton.setMaximumSize(new Dimension(0, 0));
+                return jbutton;
+            }
+        });
+        tabla_puntuacion.setBackground(new Color(213, 173, 81));
+        try {
+            tabla_puntuacion.getTableHeader().setFont(getFont(50));
+            tabla_puntuacion.setFont(getFont(50));
+        } catch (FontFormatException | IOException ex) {
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        tabla_puntuacion.setFillsViewportHeight(true);
+        tabla_puntuacion.getTableHeader().setOpaque(false);
+        tabla_puntuacion.getTableHeader().setBackground(new Color(213, 173, 81));
+        tabla_puntuacion.getTableHeader().setBorder(null);
+        tabla_puntuacion.setBorder(null);
+        tabla_puntuacion.setSelectionBackground(new Color(193, 153, 61));
+        tabla_puntuacion.setSelectionForeground(Color.BLACK);
+        tabla_puntuacion.setRowHeight(60);
+        tabla_puntuacion.setGridColor(Color.BLACK);
+        tabla_puntuacion.setShowGrid(true);
+        tabla_puntuacion.setShowHorizontalLines(true);
+        tabla_puntuacion.setShowVerticalLines(false);
+        tabla_puntuacion.setEnabled(false);
+        mostrarTabla();
+        lbl_ventanaP = new JLabel();
+        lbl_ventanaP.setIcon(new ImageIcon("recursos/img/gui/ventana/puntuacion.png"));
+        lbl_ventanaP.setSize(800, 600);
+        lbl_ventanaP.setLocation(100, 50);
+        panel_puntuacion.add(jScrollPane1);
+        panel_puntuacion.add(lbl_ventanaP);
+
+    }
+
+    private void mostrarTabla() {
+        String barra = File.separator;
+        String ubicacion = System.getProperty("user.dir") + barra + "recursos" + barra + "registros" + barra;
+        File contenedor = new File(ubicacion);
+        File[] registros = contenedor.listFiles();
+        modelo = new DefaultTableModel(null, titulo_tabla) {
+            Class[] types = new Class [] {
+                 java.lang.Object.class,java.lang.Integer.class
+            };
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        };
+        tabla_puntuacion.setModel(modelo);
+
+        for (int i = 0; i < registros.length; i++) {
+            File url = new File(ubicacion + registros[i].getName());
+            try {
+                FileInputStream fis = new FileInputStream(url);
+                Properties mostrar = new Properties();
+                mostrar.load(fis);
+                if (mostrar.getProperty("username") != null) {
+                    String username = mostrar.getProperty("username");
+                    int puntuacion = Integer.parseInt(mostrar.getProperty("puntuacion"));
+                    modelo.addRow(new Object[]{username,puntuacion});
+                }
+
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        TableRowSorter<TableModel> elQueOrdena = new TableRowSorter<TableModel>(modelo);
+        ArrayList <RowSorter.SortKey> sortKeys = new ArrayList<RowSorter.SortKey>();
+        sortKeys.add(new RowSorter.SortKey(1, SortOrder.DESCENDING));
+        elQueOrdena.setSortKeys(sortKeys); 
+        elQueOrdena.setSortable(0, false);
+        tabla_puntuacion.setRowSorter(elQueOrdena);
     }
 
     private void componentsFrame() {
@@ -166,6 +282,7 @@ public class Menu extends Ventana {
         getContentPane().add(panel_acerca);
         getContentPane().add(panel_puntuacion);
     }
+
     /*
     @Override
     public Image getIconImage() {
@@ -173,10 +290,9 @@ public class Menu extends Ventana {
                 getImage(ClassLoader.getSystemResource("/Game/img/player/hombre/Idle_1.png"));
         return retValue;
     }
-    */
+     */
     public void cambiar_componentes(JPanel panel_actual) {
         panel_actual.add(btn_atras);
-        panel_actual.add(btn_cerrar);
         panel_actual.add(fondo);
         panel_actual.setVisible(true);
         btn_atras.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -187,7 +303,6 @@ public class Menu extends Ventana {
                 panel_menu.enable();
                 panel_actual.disable();
                 panel_actual.setVisible(false);
-                panel_menu.add(btn_cerrar);
                 panel_menu.add(fondo);
             }
         });
@@ -318,5 +433,5 @@ public class Menu extends Ventana {
             }
         });
     }
-    
+
 }

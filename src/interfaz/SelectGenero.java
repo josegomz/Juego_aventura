@@ -1,5 +1,7 @@
 package interfaz;
 
+import java.awt.FontFormatException;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -54,11 +56,17 @@ public class SelectGenero extends Ventana{
         //agregar los componentes al panel 
         agregarConfiguracion(panel_genero);
         ocultarConfiguracion();
+        titulo.setText("Seleccionar genero");
+        try {
+            titulo.setFont(getFont(60));
+        } catch (FontFormatException | IOException ex) {
+            Logger.getLogger(SelectGenero.class.getName()).log(Level.SEVERE, null, ex);
+        }
         panel_genero.add(btn_conf);
         panel_genero.add(player1);
         panel_genero.add(player2);
+        panel_genero.add(titulo);
         panel_genero.add(ventana_genero);
-        panel_genero.add(btn_cerrar);
         panel_genero.add(btn_atras);
         panel_genero.add(fondo);          
     }
